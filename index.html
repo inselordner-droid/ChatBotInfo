@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NEXA – Die Zukunft intelligenter ChatBots</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--bg:#050816;--bg2:#0B1026;--c:#00E5FF;--v:#7A5CFF;--g:#5AF6A4;--t:#fff;--m:#a9b3d6;--card:rgba(255,255,255,.06);--bd:rgba(255,255,255,.12);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f4f7ff;--bg2:#e6ecff;--t:#0B1026;--m:#4a5578;--card:rgba(255,255,255,.7);--bd:rgba(11,16,38,.14)}}
+:root[data-theme="light"]{--bg:#f4f7ff;--bg2:#e6ecff;--t:#0B1026;--m:#4a5578;--card:rgba(255,255,255,.7);--bd:rgba(11,16,38,.14)}
+:root[data-theme="dark"]{--bg:#050816;--bg2:#0B1026;--t:#fff;--m:#a9b3d6;--card:rgba(255,255,255,.06);--bd:rgba(255,255,255,.12)}
+*{box-sizing:border-box;margin:0}html{scroll-behavior:smooth;scroll-padding-top:calc(70px + env(safe-area-inset-top,0px))}
+body{background:var(--bg);color:var(--t);font-family:Inter,Poppins,"Segoe UI",system-ui,sans-serif;line-height:1.6;overflow-x:hidden}
+#bg{position:fixed;inset:0;z-index:0;pointer-events:none}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;display:flex;align-items:center;gap:14px;padding:12px 4vw;backdrop-filter:blur(16px);background:color-mix(in srgb,var(--bg) 70%,transparent);border-bottom:1px solid var(--bd)}
+nav b{font-size:20px;background:linear-gradient(90deg,var(--c),var(--v));-webkit-background-clip:text;background-clip:text;color:transparent;margin-right:auto}
+nav a{color:var(--m);text-decoration:none;font-size:14px;white-space:nowrap}nav a:hover{color:var(--c)}
+.links{display:flex;gap:16px;overflow-x:auto;scrollbar-width:none;max-width:78vw}
+button{font:inherit;cursor:pointer}
+.tg{background:var(--card);border:1px solid var(--bd);color:var(--t);border-radius:99px;padding:6px 12px}
+main{position:relative;z-index:1}section{padding:90px 6vw;max-width:1200px;margin:auto}
+h2{font-size:clamp(28px,4vw,42px);margin-bottom:10px}.sub{color:var(--m);max-width:70ch;margin-bottom:34px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:22px;backdrop-filter:blur(14px);transition:.3s}
+.card:hover{transform:translateY(-6px);border-color:var(--c);box-shadow:0 0 30px rgba(0,229,255,.2)}
+.grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.hero{min-height:92vh;display:grid;grid-template-columns:1.1fr 1fr;align-items:center;gap:30px;max-width:1300px}
+.hero h1{font-size:clamp(38px,6vw,72px);line-height:1.05;margin-bottom:18px}
+.hero h1 span,.grad{background:linear-gradient(90deg,var(--c),var(--v),var(--g));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{font-size:24px;color:var(--m);margin-bottom:28px}
+.btn{border:0;border-radius:12px;padding:14px 26px;font-weight:600;color:#050816;background:linear-gradient(90deg,var(--c),var(--g));margin-right:10px;text-decoration:none;display:inline-block;box-shadow:0 0 24px rgba(0,229,255,.4)}
+.btn.o{background:none;color:var(--t);border:1px solid var(--c);box-shadow:none}
+#net{width:100%;height:420px;animation:fl 6s ease-in-out infinite}@keyframes fl{50%{transform:translateY(-14px)}}
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:10px}.flow .n{padding:14px 20px;border-radius:14px;border:1px solid var(--v);background:var(--card);cursor:pointer;transition:.3s}
+.flow .n.on{background:linear-gradient(90deg,var(--v),var(--c));color:#050816;box-shadow:0 0 22px var(--v)}.flow i{color:var(--c);font-style:normal}
+.info{margin-top:18px;min-height:64px}
+.tl{display:flex;gap:16px;overflow-x:auto;padding:10px 4px 20px}.tl .card{min-width:200px;cursor:pointer}.tl .y{color:var(--c);font-weight:700}
+.tl .card.on{border-color:var(--g)}
+.ico{font-size:30px}.kpi{font-size:44px;font-weight:800}
+.two{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.steps{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.steps .n{padding:14px;border-radius:14px;border:1px solid var(--bd);background:var(--card);text-align:left;color:var(--t)}.steps .n.on{border-color:var(--g);box-shadow:0 0 18px rgba(90,246,164,.4)}
+.chat{max-width:720px;height:480px;display:flex;flex-direction:column}
+#log{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:6px}
+.msg{max-width:82%;padding:10px 14px;border-radius:16px;animation:pop .3s}@keyframes pop{from{opacity:0;transform:scale(.95)}}
+.msg.u{align-self:flex-end;background:linear-gradient(90deg,var(--v),var(--c));color:#050816}.msg.b{background:var(--card);border:1px solid var(--bd)}
+.dots span{display:inline-block;width:7px;height:7px;margin:0 2px;border-radius:50%;background:var(--c);animation:dt 1s infinite}.dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}@keyframes dt{50%{transform:translateY(-5px)}}
+.row{display:flex;gap:8px;margin-top:10px}input,textarea{flex:1;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px;color:var(--t);font:inherit;width:100%}
+.chip{margin:4px 4px 0 0;font-size:13px}
+.opt{display:block;width:100%;text-align:left;margin-top:8px;padding:12px;border-radius:12px;border:1px solid var(--bd);background:var(--card);color:var(--t)}.opt.ok{border-color:var(--g);background:rgba(90,246,164,.15)}.opt.no{border-color:#ff5c7a;background:rgba(255,92,122,.15)}
+.faq button{width:100%;text-align:left;background:none;border:0;color:var(--t);font-weight:600;padding:4px 0}.faq p{max-height:0;overflow:hidden;transition:.35s;color:var(--m)}.faq .card.open p{max-height:220px;margin-top:8px}
+form{display:grid;gap:12px;max-width:560px}
+footer{position:relative;z-index:1;text-align:center;color:var(--m);padding:40px}
+.rv{opacity:0;transform:translateY(24px);transition:.7s}.rv.in{opacity:1;transform:none}
+@media(max-width:800px){.hero{grid-template-columns:1fr}#net{height:260px}.links{max-width:52vw}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
+:focus-visible{outline:2px solid var(--c);outline-offset:2px}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+<nav><b>NEXA</b><div class="links" id="nav"></div><button class="tg" id="theme" aria-label="Theme wechseln">Hell / Dunkel</button></nav>
+<main>
+<section id="home" class="hero">
+<div><h1>Die Zukunft <span>intelligenter ChatBots</span></h1><p>Verstehen.<br>Automatisieren.<br>Skalieren.</p><a class="btn" href="#erstellung">Jetzt starten</a><a class="btn o" href="#demo">Live Demo</a></div>
+<canvas id="net"></canvas>
+</section>
+
+<section id="chatbots" class="rv"><h2>Was ist ein ChatBot?</h2>
+<p class="sub">Ein ChatBot ist ein Computerprogramm, das Gespräche mit Menschen führt. Er ist eine Schnittstelle zu anderen Diensten, etwa Shop, Suche oder Kundendatenbank. Anders als ein Roboter hat er keinen Körper: Roboter erledigen körperliche Arbeit, Bots sind reine Software.</p>
+<div class="flow" id="f1"></div><div class="card info" id="i1"></div>
+<h2 style="margin-top:60px">Arten von ChatBots</h2>
+<div class="grid">
+<div class="card"><div class="ico">🌳</div><h3>Regelbasiert</h3><p class="sub">Feste Regeln und Entscheidungsbäume. Verlässt jemand den Pfad, kann der Bot nicht mehr antworten.</p></div>
+<div class="card"><div class="ico">🧠</div><h3>KI-ChatBot</h3><p class="sub">Versteht Sprache, Kontext und Absicht, auch bei Tippfehlern und Umgangssprache. Lernt aus Interaktionen.</p></div>
+<div class="card"><div class="ico">🤖</div><h3>KI-Agent</h3><p class="sub">Plant, entscheidet und handelt: Er ruft Systeme auf und erledigt Aufgaben Schritt für Schritt.</p></div></div>
+<h2 style="margin-top:60px">Zeitreise</h2><div class="tl" id="tl"></div><div class="card info" id="ti"></div></section>
+
+<section id="einsatz" class="rv"><h2>Einsatzgebiete</h2><p class="sub">Von der Kundenanfrage bis zur Produktionshalle: Chatbots arbeiten überall dort, wo Menschen Antworten oder Aktionen brauchen.</p><div class="grid" id="uc"></div></section>
+
+<section id="dashboard" class="rv"><h2>KPI-Dashboard</h2><p class="sub">Beispielwerte: So können gute Bots im Idealfall abschneiden. Echte Marktzahlen findest du weiter unten unter „Zahlen zur Nutzung“.</p><div class="grid" id="kp"></div>
+<div class="two" style="margin-top:24px"><div class="card"><canvas id="radar"></canvas></div><div class="card"><canvas id="dough"></canvas></div></div></section>
+
+<section id="erstellung" class="rv"><h2>ChatBot erstellen</h2><p class="sub">In neun Schritten zum eigenen Bot. Klicke einen Schritt an.</p><div class="steps" id="st"></div><div class="card info" id="si"></div></section>
+
+<section id="rag" class="rv"><h2>RAG erklärt</h2><p class="sub">Retrieval-Augmented Generation: Das Sprachmodell antwortet auf Basis deiner eigenen Dokumente statt nur aus seinem Trainingswissen.</p>
+<div class="flow" id="f2"></div><div class="card info" id="i2"></div><button class="btn" style="margin-top:14px;border:0" id="play">Ablauf abspielen</button></section>
+
+<section id="agenten" class="rv"><h2>KI-Agenten</h2><p class="sub">Fünf Stufen vom simplen Bot zum Team aus Agenten.</p><div class="flow" id="f3"></div><div class="card info" id="i3"></div></section>
+
+
+<section id="wahl" class="rv"><h2>Regel oder KI? Die Entscheidungshilfe</h2><p class="sub">Kreuze an, was auf dich zutrifft. Eine KI-Lösung ist teurer und aufwendiger, lohnt sich aber in bestimmten Fällen.</p>
+<div class="card" style="max-width:720px" id="wh"></div></section>
+
+<section id="beispiele" class="rv"><h2>Praxisbeispiele</h2><div class="grid" id="bs"></div></section>
+
+<section id="baukasten" class="rv"><h2>Baue deinen ersten Bot</h2><p class="sub">Ein regelbasierter Bot in drei Regeln: Wenn ein Stichwort vorkommt, gibt der Bot die passende Antwort. Genau so funktioniert der Kern klassischer Bots.</p>
+<div class="two"><div class="card"><label>Begrüßung</label><input id="bg1" value="Hallo! Ich bin ein Bot und helfe bei Fragen zu Öffnungszeiten, Rückgabe und Versand."><div id="rl"></div><label style="display:block;margin-top:10px">Wenn nichts passt</label><input id="bf" value="Das weiß ich leider nicht. Ich verbinde dich mit einem Menschen."></div>
+<div class="card chat" style="height:380px"><div id="mlog"></div><div class="row"><input id="mq" placeholder="Teste deinen Bot …" aria-label="Test"><button class="btn" style="margin:0;border:0" id="ms">Senden</button></div></div></div></section>
+
+<section id="zahlen" class="rv"><h2>Zahlen zur Nutzung</h2><p class="sub">Aktuelle Werte für Deutschland. Die Studien messen unterschiedlich (KI allgemein oder Chatbots, Stichprobe, Zeitpunkt), deshalb weichen die Zahlen voneinander ab.</p><div class="grid" id="zn"></div><p class="sub" style="margin-top:16px;font-size:14px">Die Werte stammen aus den genannten Studien, ich habe sie für diese Seite zusammengefasst. Prüfe vor einer Veröffentlichung die Originalquellen.</p></section>
+
+<section id="glossar" class="rv"><h2>Glossar</h2><input id="gs" placeholder="Begriff suchen …" aria-label="Glossar durchsuchen" style="margin-bottom:16px;max-width:400px"><div class="grid" id="gl"></div>
+<h2 style="margin-top:50px">Grenzen und Risiken</h2><div class="grid" id="ri"></div></section>
+
+<section id="lernen" class="rv"><h2>Weiterlernen</h2><p class="sub">Ausgewählte Quellen zum Vertiefen. Das Video und die Visualisierung sind auf Englisch.</p><div class="grid" id="ln"></div></section>
+
+<section id="quiz" class="rv"><h2>Quiz</h2><div class="card" style="max-width:720px" id="qz"></div></section>
+
+<section id="demo" class="rv"><h2>Live-ChatBot-Simulator</h2><p class="sub">Stelle eine Frage zu ChatBot, KI, Agent, Copilot, RAG, Vorteilen oder Einsatzgebieten. Der Bot antwortet aus einer lokalen Wissensdatenbank.</p>
+<div class="card chat"><div id="log"></div><div id="chips"></div><div class="row"><input id="q" placeholder="Deine Frage …" aria-label="Frage"><button class="btn" style="margin:0;border:0" id="send">Senden</button></div></div></section>
+
+<section id="faq" class="rv"><h2>FAQ</h2><div class="faq" id="fq" style="display:grid;gap:10px;max-width:800px"></div></section>
+
+<section id="zukunft" class="rv"><h2>Zukunft der KI</h2><div class="grid" id="fu"></div></section>
+
+<section id="kontakt" class="rv"><h2>Kontakt</h2><form id="cf"><input required placeholder="Name" aria-label="Name"><input required type="email" placeholder="E-Mail" aria-label="E-Mail"><textarea required rows="4" placeholder="Nachricht" aria-label="Nachricht"></textarea><button class="btn" style="border:0;width:fit-content">Nachricht senden</button><p id="cm" class="sub"></p></form></section>
+</main>
+<footer>NEXA · Demo-Seite zum Thema ChatBots und KI-Agenten</footer>
+
+<script>
+const $=s=>document.querySelector(s),H=(el,h)=>el.innerHTML=h;
+// nav
+H($('#nav'),[['home','Home'],['chatbots','ChatBots'],['einsatz','Einsatzgebiete'],['dashboard','Dashboard'],['erstellung','Erstellung'],['rag','RAG'],['agenten','Agenten'],['zahlen','Zahlen'],['glossar','Glossar'],['quiz','Quiz'],['demo','Demo'],['faq','FAQ'],['lernen','Lernen'],['zukunft','Zukunft']].map(a=>`<a href="#${a[0]}">${a[1]}</a>`).join(''));
+// theme
+const R=document.documentElement;$('#theme').onclick=()=>{const l=getComputedStyle(R).getPropertyValue('--bg').trim()==='#f4f7ff';R.dataset.theme=l?'dark':'light';charts()};
+// generic step-flow
+function flow(id,info,items,auto){const f=$(id),i=$(info);H(f,items.map((x,k)=>`<button class="n" data-k="${k}">${x[0]}</button>${k<items.length-1?'<i>➜</i>':''}`).join(''));
+ const set=k=>{f.querySelectorAll('.n').forEach((n,j)=>n.classList.toggle('on',j==k));H(i,`<b>${items[k][0]}</b><br>${items[k][1]}`)};
+ f.onclick=e=>{const b=e.target.closest('.n');if(b)set(+b.dataset.k)};set(0);return set}
+flow('#f1','#i1',[['Benutzer','Stellt eine Frage in eigenen Worten, per Text oder Sprache.'],['ChatBot','Nimmt die Nachricht an und zerlegt sie in ihre Bestandteile.'],['Analyse','Erkennt Thema und Absicht (Intent). Regelbasierte Bots suchen Schlüsselwörter, KI-Bots verstehen den Kontext.'],['Antwort','Liefert die passende Antwort oder übergibt bei Grenzfällen an einen Menschen.']]);
+const rag=flow('#f2','#i2',[['Frage','Die Person stellt eine Frage, z. B. zur Rückgabe einer Bestellung.'],['Dokumentsuche','Das System sucht in Wissensdatenbank und Dokumenten die passenden Textstellen.'],['Kontext','Die besten Treffer werden zusammen mit der Frage gebündelt.'],['LLM','Das Sprachmodell formuliert aus Frage und Kontext eine Antwort.'],['Antwort','Die Antwort basiert auf aktuellen Firmendaten und kann Quellen nennen.']]);
+$('#play').onclick=()=>{let k=0;const t=setInterval(()=>{rag(k++);if(k>4)clearInterval(t)},900)};
+flow('#f3','#i3',[['ChatBot','Beantwortet Fragen nach Regeln oder Mustern.'],['Assistent','Versteht Sprache, hilft bei Aufgaben und behält Kontext.'],['Copilot','Arbeitet direkt in deinen Tools mit und macht Vorschläge, du entscheidest.'],['Agent','Setzt Ziele selbst in Schritte um, nutzt Werkzeuge und handelt eigenständig.'],['Multi-Agent','Mehrere spezialisierte Agenten arbeiten zusammen, z. B. Recherche, Prüfung und Umsetzung.']]);
+// timeline
+const TL=[['1966','ELIZA','Das erste Dialogprogramm imitierte per Mustererkennung eine Gesprächstherapeutin.'],['1990er','WebBots','Regelbasierte Helfer auf Webseiten beantworten einfache Fragen.'],['2016','Messenger-Bots','Bots in Messenger und WhatsApp übernehmen Bestellungen und Infos.'],['2018','KI-ChatBots','NLP und Machine Learning erkennen Absichten statt nur Schlüsselwörter.'],['2022','Generative KI','Große Sprachmodelle formulieren frei und führen echte Dialoge.'],['heute','Agentensysteme','KI plant, nutzt Werkzeuge und erledigt mehrstufige Aufgaben.']];
+H($('#tl'),TL.map((t,k)=>`<div class="card" data-k="${k}"><div class="y">${t[0]}</div><b>${t[1]}</b></div>`).join(''));
+$('#tl').onclick=e=>{const c=e.target.closest('.card');if(!c)return;document.querySelectorAll('#tl .card').forEach(x=>x.classList.remove('on'));c.classList.add('on');const t=TL[c.dataset.k];H($('#ti'),`<b>${t[1]}</b> (${t[0]})<br>${t[2]}`)};$('#tl .card').click();
+// use cases
+H($('#uc'),[['🎧','Kundenservice','Beantwortet Routinefragen rund um die Uhr, das Team löst die komplexen Fälle.'],['🛒','E-Commerce','Produktberatung, Bestellstatus und Retouren im Chat.'],['🎓','Bildung','Lernbegleitung, Fragen zu Kursen und Sprachtraining.'],['🏦','Banken','Kontofragen und Hinweise auf ungewöhnliche Abbuchungen.'],['🛡️','Versicherungen','Schadenmeldung und Tarifauskunft in wenigen Minuten.'],['🏥','Gesundheitswesen','Verlässliche Informationen und Terminvergabe.'],['👥','HR','Urlaub, Onboarding und interne Fragen in natürlicher Sprache.'],['📣','Marketing','Conversational Marketing begleitet Menschen im Kaufprozess.'],['💼','Vertrieb','Qualifiziert Anfragen und übergibt passende Leads.'],['💻','IT','Erster Support bei Passwort, Zugang und Störungen.'],['🚚','Logistik','„Wo ist mein Paket?“ per Abfrage im Sendungssystem.'],['🏭','Produktion','Wartungswissen und Störungshilfe für die Halle.']].map(u=>`<div class="card"><div class="ico">${u[0]}</div><h3>${u[1]}</h3><p class="sub" style="margin:6px 0 0">${u[2]}</p></div>`).join(''));
+// KPI
+H($('#kp'),[[24,'/7','Verfügbarkeit'],[1000,'+','Anfragen'],[80,'%','Automatisierung'],['<1',' s','Antwortzeit'],[95,'%','Kundenzufriedenheit']].map(k=>`<div class="card"><div class="kpi grad" data-n="${k[0]}" data-s="${k[1]}">0</div>${k[2]}</div>`).join(''));
+function count(el){const n=el.dataset.n,s=el.dataset.s;if(isNaN(n)){el.textContent=n+s;return}let v=0;const t=setInterval(()=>{v+=Math.ceil(n/50);if(v>=n){v=+n;clearInterval(t)}el.textContent=v+s},30)}
+// charts
+let C=[];function charts(){C.forEach(c=>c.destroy());const col=getComputedStyle(R).getPropertyValue('--m').trim();Chart.defaults.color=col;
+C=[new Chart($('#radar'),{type:'radar',data:{labels:['Service','Wissen','Geschwindigkeit','Skalierung','Verfügbarkeit'],datasets:[{label:'KI-ChatBot',data:[90,85,95,92,98],borderColor:'#00E5FF',backgroundColor:'rgba(0,229,255,.25)'},{label:'Regelbasiert',data:[60,40,80,50,90],borderColor:'#7A5CFF',backgroundColor:'rgba(122,92,255,.2)'}]},options:{scales:{r:{suggestedMin:0,suggestedMax:100,grid:{color:'rgba(128,128,160,.3)'},angleLines:{color:'rgba(128,128,160,.3)'}}}}}),
+new Chart($('#dough'),{type:'doughnut',data:{labels:['Support','Vertrieb','Automatisierung','Wissensmanagement'],datasets:[{data:[40,20,25,15],backgroundColor:['#00E5FF','#7A5CFF','#5AF6A4','#ffffff'],borderWidth:0}]}})]}
+// steps
+const ST=[['Ziel definieren','Lege den Zweck fest: Was soll der Bot lösen?'],['Zielgruppe verstehen','Wie sprechen deine Kundinnen und Kunden, welche Fragen stellen sie?'],['Daten sammeln','Sammle echte Anfragen, FAQ, Tickets und Dokumente.'],['Wissensbasis aufbauen','Ordne Inhalte, damit der Bot sie finden kann.'],['Dialoge entwickeln','Schreibe Begrüßung, Antwortvarianten und Übergabe an Menschen. Der Bot darf sagen, dass er ein Bot ist.'],['KI integrieren','Binde Sprachverständnis und bei Bedarf CRM oder ERP an.'],['Testen','Prüfe mit echten Fragen, auch mit Tippfehlern und Sonderfällen.'],['Deployment','Platziere den Bot sichtbar, z. B. als Widget auf der Website.'],['Optimieren','Miss Abbruchrate, Abschlussrate, Übergaben an Menschen, NPS und Retention und verbessere laufend.']];
+H($('#st'),ST.map((s,k)=>`<button class="n" data-k="${k}"><b>${k+1}.</b> ${s[0]}</button>`).join(''));
+$('#st').onclick=e=>{const b=e.target.closest('.n');if(!b)return;document.querySelectorAll('#st .n').forEach(x=>x.classList.remove('on'));b.classList.add('on');H($('#si'),`<b>${ST[b.dataset.k][0]}</b><br>${ST[b.dataset.k][1]}`)};$('#st .n').click();
+// simulator
+const KB=[[/hallo|hi\b|hey/,'Hallo! Ich bin der NEXA-Demobot. Frag mich zu ChatBot, KI, Agent, Copilot, RAG, Vorteilen oder Einsatzgebieten.'],[/rag|retrieval|dokument/,'RAG sucht zuerst passende Dokumente und übergibt sie mit der Frage an das Sprachmodell. So antwortet die KI auf Basis aktueller, eigener Daten.'],[/agent/,'Ein KI-Agent plant, entscheidet und handelt: Er zerlegt ein Ziel in Schritte und nutzt Werkzeuge wie CRM, Kalender oder Suche.'],[/copilot/,'Ein Copilot arbeitet in deinen Anwendungen mit, schlägt vor und entwirft. Die Entscheidung bleibt bei dir.'],[/vorteil|nutzen/,'Vorteile: schnelle Antworten, Verfügbarkeit rund um die Uhr, entlastete Serviceteams und niedrigere Kosten pro Anfrage.'],[/einsatz|branche|wo/,'Typische Einsatzgebiete: Kundenservice, E-Commerce, Bildung, Banken, Versicherungen, Gesundheit, HR, Marketing, Vertrieb, IT, Logistik und Produktion.'],[/\bki\b|künstlich|intelligenz/,'KI-Chatbots nutzen Sprachverarbeitung (NLP), erkennen Kontext und Absicht und lernen aus Interaktionen.'],[/kosten|preis/,'Die Spanne ist groß: einfache Bots gibt es günstig oder kostenlos, komplexe KI-Lösungen mit Integrationen können über 100.000 € kosten.'],[/chatbot|bot/,'Ein ChatBot ist ein Programm, das Gespräche mit Menschen führt und als Schnittstelle zu Diensten dient. Er kann regelbasiert oder KI-basiert sein.']];
+const log=$('#log');function add(t,c){const d=document.createElement('div');d.className='msg '+c;d.innerHTML=t;log.append(d);log.scrollTop=log.scrollHeight;return d}
+function ask(t){t=t.trim();if(!t)return;add(t.replace(/</g,'&lt;'),'u');const d=add('<span class="dots"><span></span><span></span><span></span></span>','b');const l=t.toLowerCase(),a=(KB.find(k=>k[0].test(l))||[0,'Dazu habe ich nichts in meiner Wissensdatenbank. Probiere: ChatBot, KI, Agent, Copilot, RAG, Vorteile oder Einsatzgebiete.'])[1];setTimeout(()=>{d.textContent=a;log.scrollTop=log.scrollHeight},900)}
+$('#send').onclick=()=>{ask($('#q').value);$('#q').value=''};$('#q').onkeydown=e=>{if(e.key==='Enter')$('#send').click()};
+H($('#chips'),['Was ist ein ChatBot?','Was ist RAG?','Was ist ein Agent?','Vorteile?','Einsatzgebiete?'].map(c=>`<button class="tg chip">${c}</button>`).join(''));$('#chips').onclick=e=>{if(e.target.matches('.chip'))ask(e.target.textContent)};
+add('Hallo! Frag mich etwas zu ChatBots, KI, Agenten, Copilots oder RAG.','b');
+// quiz
+const Q=[['Was unterscheidet einen Bot von einem Roboter?',['Bots sind reine Software','Bots haben Arme','Bots sind immer KI'],0],['Wie arbeitet ein regelbasierter Bot?','Entscheidungsbaum und Schlüsselwörter|Er lernt selbstständig|Er schreibt eigenen Code'.split('|'),0],['Was bedeutet NLP?',['Natural Language Processing','New Logic Protocol','Network Layer Program'],0],['Was ist ein Intent?',['Die Absicht hinter einer Nachricht','Ein Passwort','Ein Chatfenster'],0],['Wofür steht RAG?',['Retrieval-Augmented Generation','Random Access Graph','Rule And Group'],0],['Was macht ein KI-Agent zusätzlich?',['Er plant und handelt','Er zeichnet Bilder','Er ersetzt den Browser'],0],['Welches Programm war ein früher Dialog-Pionier?',['ELIZA','Excel','Photoshop'],0],['Wie viele deutsche Unternehmen nutzten laut ifo (Mai 2026) KI?',['Gut die Hälfte (54,4 %)','Etwa 5 %','Fast alle (95 %)'],0],['Was misst die Abbruchrate?',['Anteil vorzeitig ausgestiegener Nutzer','Serverkosten','Anzahl der Bots'],0],['Wann lohnt sich ein KI-Bot besonders?',['Bei vielen individuellen Anfragen','Nie','Nur bei zehn Anfragen pro Jahr'],0]];
+let qi=0,sc=0;function qshow(){const z=$('#qz');if(qi>=Q.length){const p=sc*10,l=p<=40?'Anfänger':p<=70?'Fortgeschritten':'Experte';H(z,`<h3>${p} Punkte: ${l}</h3><p class="sub">${sc} von 10 richtig.</p><button class="btn" style="border:0" id="rs">Nochmal spielen</button>`);$('#rs').onclick=()=>{qi=sc=0;qshow()};return}
+ const q=Q[qi],o=q[1].map((t,i)=>[t,i]).sort(()=>Math.random()-.5);H(z,`<p class="sub" style="margin:0">Frage ${qi+1} von 10 · ${sc*10} Punkte</p><h3>${q[0]}</h3>${o.map(x=>`<button class="opt" data-c="${x[1]==q[2]?1:0}">${x[0]}</button>`).join('')}`);
+ z.onclick=e=>{const b=e.target.closest('.opt');if(!b||z.dataset.l)return;z.dataset.l=1;if(b.dataset.c=='1'){sc++;b.classList.add('ok')}else{b.classList.add('no');z.querySelector('[data-c="1"]').classList.add('ok')}setTimeout(()=>{delete z.dataset.l;qi++;qshow()},900)}}qshow();
+// FAQ
+const F=[['Was ist ein ChatBot?','Ein Programm, das Gespräche mit Menschen führt und Aufgaben übernimmt.'],['Ist ein Bot ein Roboter?','Nein. Roboter sind Maschinen mit Körper, Bots sind Software.'],['Regelbasiert oder KI?','Regelbasiert eignet sich für feste Standardfragen, KI für individuelle Anfragen.'],['Wann lohnt sich KI?','Bei vielen individuellen Anfragen, großer Angebotsvielfalt, mehreren Sprachen und Anbindung an CRM oder ERP.'],['Was kostet ein ChatBot?','Von kostenlos bis über 100.000 €, je nach KI-Anteil und Integrationen.'],['Was ist NLP?','Verarbeitung natürlicher Sprache: Das System versteht Text und Absicht.'],['Was ist RAG?','Suche in eigenen Dokumenten plus Antwort durch ein Sprachmodell.'],['Was ist ein Copilot?','Ein KI-Helfer, der in deinen Tools mitarbeitet und Vorschläge macht.'],['Was ist ein KI-Agent?','Ein System, das Ziele in Schritte zerlegt und selbst handelt.'],['Ersetzt ein Bot mein Team?','Nein. Er übernimmt Routine, Menschen bleiben für komplexe Fälle wichtig.'],['Wie messe ich Erfolg?','Nutzerzahl, Abbruchrate, Abschlussrate, Dauer, Übergaben, NPS und Retention.'],['Wie fange ich an?','Ziel definieren, Zielgruppe verstehen, Daten sammeln und klein starten.'],['Wo platziere ich den Bot?','Sichtbar auf der Website als Widget, oder in WhatsApp und Messenger.'],['Sollte der Bot sagen, dass er ein Bot ist?','Ja, transparente Kommunikation schafft Vertrauen.'],['Was ist RPA?','Automatisierung interner Abläufe. In Kombination mit Chatbots lassen sich Kommunikation und Prozesse verbinden.'],['Wie geht es mit KI weiter?','Richtung Agenten, Copilots, Sprach- und multimodaler KI.']];
+H($('#fq'),F.map(f=>`<div class="card"><button aria-expanded="false">${f[0]}</button><p>${f[1]}</p></div>`).join(''));
+$('#fq').onclick=e=>{const b=e.target.closest('button');if(!b)return;const c=b.parentNode;c.classList.toggle('open');b.setAttribute('aria-expanded',c.classList.contains('open'))};
+// future
+H($('#fu'),[['🤝','Agenten','Übernehmen ganze Arbeitsabläufe.'],['🧑‍💻','Copilots','Arbeiten in jeder Anwendung mit.'],['🏢','Enterprise AI','KI mit Firmenwissen, Rechten und Governance.'],['🎙️','Voice AI','Natürliche Gespräche per Sprache.'],['🖼️','Multimodale KI','Text, Bild, Ton und Video gemeinsam.'],['🕸️','Knowledge Graphs','Verknüpftes Wissen für präzisere Antworten.'],['👾','Multi-Agent-Systeme','Teams spezialisierter Agenten.'],['🚗','Autonome Systeme','Entscheiden und handeln im Betrieb.']].map(u=>`<div class="card"><div class="ico">${u[0]}</div><h3>${u[1]}</h3><p class="sub" style="margin:6px 0 0">${u[2]}</p></div>`).join(''));
+$('#cf').onsubmit=e=>{e.preventDefault();$('#cm').textContent='Danke! Dies ist eine Demo, es wurde nichts versendet.';e.target.reset()};
+
+// decision helper
+const W=['Viele individuelle Anfragen in eigenen Worten','Große Produkt- oder Servicevielfalt','Support in mehreren Sprachen','Zugriff auf CRM/ERP nötig (z. B. Paketstatus)','Serviceteam verliert Zeit mit Vorsortieren'];
+H($('#wh'),W.map((w,k)=>`<label style="display:block;padding:6px 0"><input type="checkbox" style="width:auto;margin-right:8px" data-k="${k}">${w}</label>`).join('')+'<div class="info" id="wr"></div>');
+function wr(){const n=document.querySelectorAll('#wh input:checked').length;H($('#wr'),n>=3?'<b>Empfehlung: KI-Bot.</b> Mehrere Kriterien sprechen für Sprachverständnis und Anbindung an Systeme.':n>=1?'<b>Empfehlung: Mischform.</b> Ein regelbasierter Bot für Standardfragen, KI für schwierige Fälle.':'<b>Empfehlung: regelbasiert.</b> Für feste Standardfragen reicht ein Entscheidungsbaum.')}
+$('#wh').onchange=wr;wr();
+H($('#bs'),[['🥗','HelloFresh: „Freddy“','Facebook-Bot mit Rezeptideen. Laut Chatfuel stiegen die Nachrichten um 47 %, die Antwortzeit verbesserte sich um 76 %. Bei Bedarf gibt es einen Menschen.'],['🏦','Capital One: „Eno“','Banking-Bot, der ungewöhnliche Abbuchungen meldet und über 2200 Begriffe und Emojis versteht.'],['🩺','WHO: Health Alert','WhatsApp-Bot mit seriösen, aktuellen Infos statt Smalltalk.'],['📦','Hermes: „Bo“','WhatsApp-Bot beantwortet Fragen zur Sendung und leitet Pakete an einen Paketshop um.'],['🏖️','Urlaubsantrag intern','Chat fragt im Hintergrund die Urlaubsplanung des Teams ab und antwortet in normaler Sprache.']].map(u=>`<div class="card"><div class="ico">${u[0]}</div><h3>${u[1]}</h3><p class="sub" style="margin:6px 0 0">${u[2]}</p></div>`).join(''));
+// mini builder
+const RL=[['öffnungszeit','Wir sind Mo–Fr von 9 bis 17 Uhr erreichbar.'],['rückgabe','Du kannst Artikel 14 Tage nach Erhalt zurücksenden.'],['versand','Der Versand dauert in der Regel 2–3 Werktage.']];
+H($('#rl'),RL.map((r,i)=>`<div class="row"><input class="k" value="${r[0]}" aria-label="Stichwort ${i+1}"><input class="a" value="${r[1]}" aria-label="Antwort ${i+1}"></div>`).join(''));
+const ml=$('#mlog');function madd(t,c){const d=document.createElement('div');d.className='msg '+c;d.textContent=t;ml.append(d);ml.scrollTop=ml.scrollHeight}
+$('#mlog').style.cssText='flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px';madd($('#bg1').value,'b');
+function mask(){const t=$('#mq').value.trim();if(!t)return;madd(t,'u');$('#mq').value='';const l=t.toLowerCase();let a=$('#bf').value;document.querySelectorAll('#rl .row').forEach(r=>{const k=r.querySelector('.k').value.trim().toLowerCase();if(k&&l.includes(k))a=r.querySelector('.a').value});setTimeout(()=>madd(a,'b'),500)}
+$('#ms').onclick=mask;$('#mq').onkeydown=e=>{if(e.key==='Enter')mask()};
+// numbers
+H($('#zn'),[['67%','67 % der Bevölkerung nutzen zumindest hin und wieder generative KI wie ChatGPT, Copilot oder Gemini.','Bitkom Research, 2025'],['54,4 %','54,4 % der deutschen Unternehmen setzen KI ein, nach 40,9 % ein Jahr zuvor.','ifo, Mai 2026'],['70 %','70 % der Unternehmen mit generativer KI nutzen ChatGPT, dahinter Copilot (28 %) und Gemini (22 %).','Bitkom Research, 2025'],['68 %','68 % der Chatbot-Nutzer haben schon ein sensibles Thema mit einer KI besprochen, 51 % fürchten Werbeprofile.','Umfrage, aktuell berichtet']].map(z=>`<div class="card"><div class="kpi grad" style="font-size:38px">${z[0]}</div>${z[1]}<p class="sub" style="margin:8px 0 0;font-size:13px">Quelle: ${z[2]}</p></div>`).join(''));
+// glossary
+const G=[['Bot','Computerprogramm, das Aufgaben weitgehend automatisch erledigt.'],['ChatBot','Bot, der Gespräche mit Menschen führt.'],['Regelbasiert','Antwortet nach festen Regeln und Entscheidungsbäumen.'],['NLP','Verarbeitung natürlicher Sprache: Text wird analysiert und verstanden.'],['Intent','Die Absicht hinter einer Nachricht, z. B. „Paket verfolgen“.'],['LLM','Großes Sprachmodell, das auf riesigen Textmengen trainiert wurde und Sprache erzeugt.'],['Prompt','Die Eingabe oder Anweisung an ein Sprachmodell.'],['Halluzination','Das Modell erfindet plausibel klingende, aber falsche Inhalte.'],['RAG','Das Modell bekommt passende Dokumente aus einer Wissensbasis mitgeliefert.'],['Agent','KI, die Ziele in Schritte zerlegt und Werkzeuge nutzt.'],['RPA','Automatisierung interner Abläufe, oft mit Chatbots kombiniert.'],['NPS','Net Promoter Score: Wie wahrscheinlich ist eine Weiterempfehlung?']];
+function gl(q){H($('#gl'),G.filter(g=>(g[0]+g[1]).toLowerCase().includes(q)).map(g=>`<div class="card"><b>${g[0]}</b><p class="sub" style="margin:4px 0 0">${g[1]}</p></div>`).join('')||'<p class="sub">Kein Treffer.</p>')}gl('');$('#gs').oninput=e=>gl(e.target.value.toLowerCase());
+H($('#ri'),[['⚠️','Halluzinationen','KI-Bots können Falsches sagen. Antworten aus geprüften Quellen (RAG) und Testfragen verringern das Risiko.'],['🔒','Datenschutz','Klare Regeln, welche Kundendaten der Bot sehen und speichern darf. Rechtslage vorab prüfen.'],['🙋','Übergabe an Menschen','Bei komplexen Anliegen sollte ein Mensch übernehmen, das wünschen laut Studien viele Kunden.'],['🪪','Transparenz','Der Bot sollte sagen, dass er ein Bot ist. Gesetzliche Pflichten (EU-KI-Gesetz) bitte aktuell nachlesen.']].map(u=>`<div class="card"><div class="ico">${u[0]}</div><h3>${u[1]}</h3><p class="sub" style="margin:6px 0 0">${u[2]}</p></div>`).join(''));
+// resources
+H($('#ln'),[['Chatbot erstellen (HubSpot)','Anleitung mit Plattformen wie Chatfuel, Botpress und Dialogflow.','https://blog.hubspot.de/service/chatbot-entwickeln-und-promoten'],['Was ist ein LLM? (DataCamp)','Deutscher Einsteigertext zu Sprachmodellen.','https://www.datacamp.com/de/blog/what-is-an-llm-a-guide-on-large-language-models'],['LLM Visualization','Interaktive Grafik, Schritt für Schritt (Englisch).','https://bbycroft.net/llm'],['3Blue1Brown auf YouTube','Video „Large Language Models explained briefly“ (Englisch).','https://www.youtube.com/@3blue1brown'],['Bitkom: KI in Deutschland','Studienbericht mit aktuellen Nutzungszahlen.','https://www.bitkom.org/sites/main/files/2026-02/bitkom-studienbericht-ki.pdf']].map(l=>`<a class="card" style="text-decoration:none;color:inherit;display:block" href="${l[2]}" target="_blank" rel="noopener noreferrer"><b>${l[0]}</b><p class="sub" style="margin:4px 0 0">${l[1]}</p></a>`).join(''));
+
+// reveal + counters
+const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');x.target.querySelectorAll('.kpi').forEach(count);if(x.target.id==='dashboard')charts();io.unobserve(x.target)}}),{threshold:.15});document.querySelectorAll('.rv').forEach(s=>io.observe(s));
+// particles + network
+const bg=$('#bg'),b=bg.getContext('2d');let P=[];function rs(){bg.width=innerWidth;bg.height=innerHeight}rs();addEventListener('resize',rs);
+for(let i=0;i<70;i++)P.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4});
+function loop(){b.clearRect(0,0,bg.width,bg.height);P.forEach(p=>{p.x=(p.x+p.vx+bg.width)%bg.width;p.y=(p.y+p.vy+bg.height)%bg.height;b.fillStyle='rgba(0,229,255,.6)';b.fillRect(p.x,p.y,2,2)});
+ const n=$('#net'),c=n.getContext('2d'),w=n.width=n.clientWidth,h=n.height=n.clientHeight,t=Date.now()/1000,N=[];for(let i=0;i<22;i++){const a=i*2.4+t*.2,r=(.25+.2*((i*7)%5)/4)*Math.min(w,h)*1.1;N.push([w/2+Math.cos(a)*r*1.2,h/2+Math.sin(a*1.3)*r])}
+ N.forEach((p,i)=>N.forEach((q,j)=>{const d=Math.hypot(p[0]-q[0],p[1]-q[1]);if(j>i&&d<w*.3){c.strokeStyle=`rgba(122,92,255,${1-d/(w*.3)})`;c.beginPath();c.moveTo(...p);c.lineTo(...q);c.stroke()}}));
+ N.forEach((p,i)=>{c.fillStyle=i%3?'#00E5FF':'#5AF6A4';c.shadowColor=c.fillStyle;c.shadowBlur=14;c.beginPath();c.arc(p[0],p[1],4,0,7);c.fill()});c.shadowBlur=0;
+ if(!matchMedia('(prefers-reduced-motion:reduce)').matches)requestAnimationFrame(loop)}
+loop();
+
+
+</script>
+
+<style>
+.video-wrapper {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto 32px auto;
+}
+
+.video-frame {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 0;
+    display: block;
+    border-radius: 12px;
+}
+
+.ard-video {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #111;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.ard-video a {
+    color: white;
+    text-decoration: none;
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    padding: 16px 24px;
+    border: 1px solid rgba(255,255,255,0.7);
+    border-radius: 10px;
+    transition: 0.2s;
+}
+
+.ard-video a:hover {
+    background: white;
+    color: #111;
+}
+</style>
+
+
+
+<style>
+.video-section {
+    max-width: 1000px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+}
+
+.video-card {
+    background: #f7f7f5;
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 24px;
+    border: 1px solid #e5e5e0;
+}
+
+.video-card h3 {
+    margin: 0 0 10px 0;
+    font-size: 23px;
+    line-height: 1.3;
+    color: #222;
+}
+
+.video-card p {
+    margin: 0 0 22px 0;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #555;
+}
+
+.video-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 20px;
+    background: #111;
+    color: white !important;
+    text-decoration: none !important;
+    border-radius: 9px;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.video-button:hover {
+    background: #333;
+    transform: translateY(-1px);
+}
+
+.video-icon {
+    font-size: 18px;
+}
+</style>
+
+
+<div class="video-section">
+
+
+    <!-- VIDEO 1 -->
+
+    <div class="video-card">
+
+        <h3>
+            Wie funktioniert ChatGPT?
+        </h3>
+
+        <p>
+            In diesem Video erfährst du anschaulich, wie moderne
+            KI-Sprachmodelle wie ChatGPT funktionieren und wie eine
+            künstliche Intelligenz Texte erzeugen kann.
+        </p>
+
+        <a
+            class="video-button"
+            href="https://www.youtube.com/watch?v=MsqL9fzOzXU"
+            target="_blank"
+            rel="noopener noreferrer">
+
+            <span class="video-icon">▶</span>
+            Video auf YouTube ansehen
+
+        </a>
+
+    </div>
+
+
+    <!-- VIDEO 2 -->
+
+    <div class="video-card">
+
+        <h3>
+            Team Timster: So funktioniert ein KI-Chatbot
+        </h3>
+
+        <p>
+            Wie funktionieren KI-Chatbots eigentlich? Team Timster
+            erklärt kindgerecht, was hinter einem KI-Chatbot steckt,
+            wie er auf Fragen antwortet und was man bei der Nutzung
+            beachten sollte.
+        </p>
+
+        <a
+            class="video-button"
+            href="https://www.ardmediathek.de/video/team-timster/so-funktioniert-ein-ki-chatbot/kika/Y3JpZDovL2tpa2EuZGUvYmVpdHJhZy9jbXMvNWExNjI2MzYtZTQ2Yy00MjdkLWE3MWUtNWEwNDUzZjVkOTgz"
+            target="_blank"
+            rel="noopener noreferrer">
+
+            <span class="video-icon">▶</span>
+            Video in der ARD Mediathek ansehen
+
+        </a>
+
+    </div>
+
+
+    <!-- VIDEO 3 -->
+
+    <div class="video-card">
+
+        <h3>
+            Künstliche Intelligenz einfach erklärt
+        </h3>
+
+        <p>
+            Dieses Video zeigt weitere Grundlagen rund um künstliche
+            Intelligenz und hilft dabei, besser zu verstehen, was KI
+            kann, wie sie arbeitet und wo ihre Grenzen liegen.
+        </p>
+
+        <a
+            class="video-button"
+            href="https://www.youtube.com/watch?v=VZdighzUoOU"
+            target="_blank"
+            rel="noopener noreferrer">
+
+            <span class="video-icon">▶</span>
+            Video auf YouTube ansehen
+
+        </a>
+
+    </div>
+
+
+</div>
+
+
+</body>
+</html>
